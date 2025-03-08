@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Summarizer</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="../static/style.css">
 </head>
 <body>
     <h2>YouTube Summarizer</h2>
@@ -22,6 +22,11 @@
     <textarea id="summary" rows="6" readonly></textarea>
 
     <button onclick="saveSummary()">Save as .docx</button>
+    <a id="download-link" style="display:none;" href="/download_summary" download>
+        <button>Download Summary</button>
+    </a>
+
+    <button id="theme-toggle">Toggle Dark Mode</button>
 
     <script>
         function fetchTranscript() {
@@ -69,10 +74,23 @@
             })
             .then(response => response.json())
             .then(data => {
+                if (data.file) {
+                    document.getElementById("download-link").style.display = "block";
+                }
                 alert(data.message);
             })
             .catch(error => console.error("Error:", error));
         }
+
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            if (document.body.getAttribute('data-theme') === 'dark') {
+                document.body.setAttribute('data-theme', 'light');
+                this.textContent = 'Toggle Dark Mode';
+            } else {
+                document.body.setAttribute('data-theme', 'dark');
+                this.textContent = 'Toggle Light Mode';
+            }
+        });
     </script>
 </body>
 </html>

@@ -7,7 +7,7 @@ from docx import Document
 app = Flask(__name__)
 
 # Set up Gemini API
-GEMINI_API_KEY = "AIzaSyBnTIV206lefAQ9UZ5h2svdDOwRjg0S14s"  
+GEMINI_API_KEY = "AIzaSyBnTIV206lefAQ9UZ5h2svdDOwRjg0S14s"
 genai.configure(api_key=GEMINI_API_KEY)
 
 
