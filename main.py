@@ -2,12 +2,17 @@ from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled
 import re
+import os
 from docx import Document
 
 app = Flask(__name__)
 
 # Set up Gemini API
-GEMINI_API_KEY = "AIzaSyBnTIV206lefAQ9UZ5h2svdDOwRjg0S14s"
+# GEMINI_API_KEY = ""
+GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY not set in environment variables.")
+
 genai.configure(api_key=GEMINI_API_KEY)
 
 
