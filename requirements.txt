@@ -1,6 +1,7 @@
+flask
+gunicorn
 youtube-transcript-api
 google-generativeai
 pillow
-docx2txt
-flask
-gunicorn
+python-dotenv
+python-docx
