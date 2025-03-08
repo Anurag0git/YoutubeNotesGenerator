@@ -1,0 +1,4 @@
+youtube-transcript-api
+google-generativeai
+pillow
+docx2txt
