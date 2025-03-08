@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+    --button-background: #e0e0e0;
+    --button-text: #000000;
+}
+
+[data-theme="dark"] {
+    --background-color: #333333;
+    --text-color: #ffffff;
+    --button-background: #555555;
+    --button-text: #ffffff;
+}

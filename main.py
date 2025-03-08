@@ -43,7 +43,7 @@ def generate_summary():
         messagebox.showerror("Error", "Please fetch the transcript first!")
         return
 
-    prompt = f"Generate detailed notes for each section in the given transcript in simple English:\n\n{transcript}"
+    prompt = f"Generate detailed notes for each section in the given transcript in simple English:, Notes should be in deep with covering each concept, but in simple language, use proper formatting and ui\n\n{transcript}"
 
     try:
         model = genai.GenerativeModel("gemini-2.0-flash")
