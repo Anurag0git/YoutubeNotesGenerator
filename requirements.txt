@@ -5,3 +5,4 @@ google-generativeai
 pillow
 python-dotenv
 python-docx
+yt-dlp
