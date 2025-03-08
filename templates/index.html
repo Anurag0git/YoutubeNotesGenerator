@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Summarizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h2>YouTube Summarizer</h2>
+
+    <label for="url">Enter YouTube URL:</label>
+    <input type="text" id="url" placeholder="Paste YouTube URL here">
+    <button onclick="fetchTranscript()">Fetch Transcript</button>
+
+    <h3>Transcript:</h3>
+    <textarea id="transcript" rows="6" readonly></textarea>
+
+    <button onclick="generateSummary()">Generate Summary</button>
+
+    <h3>Generated Summary:</h3>
+    <textarea id="summary" rows="6" readonly></textarea>
+
+    <button onclick="saveSummary()">Save as .docx</button>
+
+    <script>
+        function fetchTranscript() {
+            let url = document.getElementById("url").value;
+            fetch("/get_transcript", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: url })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.transcript) {
+                    document.getElementById("transcript").value = data.transcript;
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function generateSummary() {
+            let transcript = document.getElementById("transcript").value;
+            fetch("/generate_summary", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ transcript: transcript })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.summary) {
+                    document.getElementById("summary").value = data.summary;
+                } else {
+                    alert(data.error);
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function saveSummary() {
+            let summary = document.getElementById("summary").value;
+            fetch("/save_summary", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ summary: summary })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
