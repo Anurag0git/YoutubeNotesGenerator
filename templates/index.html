@@ -4,93 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Summarizer</title>
-    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <h2>YouTube Summarizer</h2>
+<body data-theme="light">
+    <div class="container">
+        <h2>YouTube Summarizer</h2>
 
-    <label for="url">Enter YouTube URL:</label>
-    <input type="text" id="url" placeholder="Paste YouTube URL here">
-    <button onclick="fetchTranscript()">Fetch Transcript</button>
+        <label for="url">Enter YouTube URL:</label>
+        <input type="text" id="url" placeholder="Paste YouTube URL here">
+        <button onclick="fetchTranscript()">Fetch Transcript</button>
 
-    <h3>Transcript:</h3>
-    <textarea id="transcript" rows="6" readonly></textarea>
+        <h3>Transcript:</h3>
+        <textarea id="transcript" rows="6" readonly></textarea>
 
-    <button onclick="generateSummary()">Generate Summary</button>
+        <button onclick="generateSummary()">Generate Summary</button>
 
-    <h3>Generated Summary:</h3>
-    <textarea id="summary" rows="6" readonly></textarea>
+        <h3>Generated Summary:</h3>
+        <textarea id="summary" rows="6" readonly></textarea>
 
-    <button onclick="saveSummary()">Save as .docx</button>
-    <a id="download-link" style="display:none;" href="/download_summary" download>
-        <button>Download Summary</button>
-    </a>
+        <button onclick="saveSummary()">Save as .docx</button>
+        <a id="download-link" style="display:none;" href="/download_summary" download>
+            <button>Download Summary</button>
+        </a>
 
-    <button id="theme-toggle">Toggle Dark Mode</button>
+        <button id="theme-toggle">Toggle Dark Mode</button>
+    </div>
 
-    <script>
-        function fetchTranscript() {
-            let url = document.getElementById("url").value;
-            fetch("/get_transcript", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: url })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.transcript) {
-                    document.getElementById("transcript").value = data.transcript;
-                } else {
-                    alert(data.error);
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        }
-
-        function generateSummary() {
-            let transcript = document.getElementById("transcript").value;
-            fetch("/generate_summary", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ transcript: transcript })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.summary) {
-                    document.getElementById("summary").value = data.summary;
-                } else {
-                    alert(data.error);
-                }
-            })
-            .catch(error => console.error("Error:", error));
-        }
-
-        function saveSummary() {
-            let summary = document.getElementById("summary").value;
-            fetch("/save_summary", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ summary: summary })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.file) {
-                    document.getElementById("download-link").style.display = "block";
-                }
-                alert(data.message);
-            })
-            .catch(error => console.error("Error:", error));
-        }
-
-        document.getElementById('theme-toggle').addEventListener('click', function() {
-            if (document.body.getAttribute('data-theme') === 'dark') {
-                document.body.setAttribute('data-theme', 'light');
-                this.textContent = 'Toggle Dark Mode';
-            } else {
-                document.body.setAttribute('data-theme', 'dark');
-                this.textContent = 'Toggle Light Mode';
-            }
-        });
-    </script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
