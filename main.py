@@ -71,6 +71,44 @@ def get_transcript():
         return jsonify({"error": f"Could not fetch transcript: {str(e)}"}), 500
 
 
+# API Route to Generate Summary
+@app.route('/generate_summary', methods=['POST'])
+def generate_summary():
+    data = request.json
+    transcript = data.get("transcript", "").strip()
+
+    if not transcript:
+        return jsonify({"error": "Transcript is empty"}), 400
+
+    prompt = f"Generate detailed notes for each section in the given transcript in simple English:\n\n{transcript}"
+
+    try:
+        model = genai.GenerativeModel("gemini-2.0-flash")
+        response = model.generate_content(prompt)
+        summary = response.text if response else "Failed to generate summary."
+        return jsonify({"summary": summary})
+    except Exception as e:
+        return jsonify({"error": f"Could not generate summary: {str(e)}"}), 500
+
+
+# API Route to Save Summary as .docx
+@app.route('/save_summary', methods=['POST'])
+def save_summary():
+    data = request.json
+    summary = data.get("summary", "").strip()
+
+    if not summary:
+        return jsonify({"error": "No summary to save!"}), 400
+
+    file_path = "summary.docx"
+    doc = Document()
+    doc.add_heading("YouTube Video Summary", level=1)
+    doc.add_paragraph(summary)
+    doc.save(file_path)
+
+    return jsonify({"message": "Summary saved successfully!", "file": file_path})
+
+
 # Serve the Webpage
 @app.route('/')
 def home():
