@@ -1,0 +1,17 @@
+component:
+  name: youtube-summarizer
+  type: service
+  source:
+    type: git
+    repository: "https://github.com/Anurag0git/YoutubeNotesGenerator.git"
+    branch: main
+  build:
+    buildpack: docker
+    dockerfile: Dockerfile
+    context: /
+  run:
+    container:
+      port: 5000
+      env:
+        - name: GOOGLE_API_KEY
+          value: "AIzaSyBnTIV206lefAQ9UZ5h2svdDOwRjg0S14s"
