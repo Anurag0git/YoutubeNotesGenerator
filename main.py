@@ -80,7 +80,7 @@ def generate_summary():
     if not transcript:
         return jsonify({"error": "Transcript is empty"}), 400
 
-    prompt = f"Generate detailed notes for each section in the given transcript in simple English:\n\n{transcript}"
+    prompt = f"Generate detailed notes for each section in the given transcript in simplest language English and do not use formatting, use easiest explaination so that even kid could understand, make proper notes so once read, I should not forget them in my life:\n\n{transcript}"
 
     try:
         model = genai.GenerativeModel("gemini-2.0-flash")
