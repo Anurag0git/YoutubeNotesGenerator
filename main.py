@@ -129,9 +129,20 @@ def save_summary():
 
     # Add summary text (handling long text)
     y_position = 730
+    max_lines_per_page = 35  # Adjust based on font size
+    current_line = 0
+
     for line in summary.split("\n"):
         pdf.drawString(100, y_position, line)
-        y_position -= 20  # Move to next line
+        y_position -= 20
+        current_line += 1
+
+        # If the page is full, start a new page
+        if current_line >= max_lines_per_page:
+            pdf.showPage()
+            pdf.setFont("Helvetica", 12)
+            y_position = 750  # Reset position for the new page
+            current_line = 0  # Reset line count
 
     pdf.save()
 
