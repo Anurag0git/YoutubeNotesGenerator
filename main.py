@@ -60,8 +60,8 @@ def get_content():
             )
 
         # Extract transcript text properly
-        # text = " ".join([entry.text for entry in selected_transcript.fetch()])
-        text = " ".join([entry["text"] for entry in selected_transcript.fetch()])
+        text = " ".join([entry.text for entry in selected_transcript.fetch()])
+        # text = " ".join([entry["text"] for entry in selected_transcript.fetch()])
 
         return jsonify({"transcript": text, "language": selected_transcript.language})
 
