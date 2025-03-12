@@ -57,8 +57,9 @@ def get_transcript():
                 [t.language_code for t in transcript_list]
             )
 
-        # Extract transcript text
-        text = " ".join([entry["text"] for entry in selected_transcript.fetch()])
+        # Extract transcript text properly
+        text = " ".join([entry.text for entry in selected_transcript.fetch()])
+
         return jsonify({"transcript": text, "language": selected_transcript.language})
 
     except NoTranscriptFound:
@@ -69,7 +70,6 @@ def get_transcript():
         return jsonify({"error": f"YouTube request failed: {str(e)}"}), 500
     except Exception as e:
         return jsonify({"error": f"Could not fetch transcript: {str(e)}"}), 500
-
 
 # API Route to Generate Summary
 @app.route('/generate_summary', methods=['POST'])
@@ -117,5 +117,5 @@ def home():
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5555))
     app.run(host="0.0.0.0", port=port, debug=True)
