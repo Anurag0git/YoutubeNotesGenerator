@@ -3,9 +3,11 @@ import google.generativeai as genai
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 import re
 import requests
-from docx import Document
 import os
 from dotenv import load_dotenv
+from flask import send_from_directory
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
 
 load_dotenv()
 
@@ -58,8 +60,8 @@ def get_content():
             )
 
         # Extract transcript text properly
-        text = " ".join([entry.text for entry in selected_transcript.fetch()])
-        # text = " ".join([entry["text"] for entry in selected_transcript.fetch()])
+        # text = " ".join([entry.text for entry in selected_transcript.fetch()])
+        text = " ".join([entry["text"] for entry in selected_transcript.fetch()])
 
         return jsonify({"transcript": text, "language": selected_transcript.language})
 
@@ -105,8 +107,9 @@ def generate_summary():
     except Exception as e:
         return jsonify({"error": f"Could not generate notes: {str(e)}"}), 500
 
+# Ensure the directory exists
+os.makedirs("static/files", exist_ok=True)
 
-# API Route to Save Summary as .docx
 @app.route('/save_summary', methods=['POST'])
 def save_summary():
     data = request.json
@@ -115,13 +118,29 @@ def save_summary():
     if not summary:
         return jsonify({"error": "No notes to save!"}), 400
 
-    file_path = "notes.docx"
-    doc = Document()
-    doc.add_heading("Notes", level=1)
-    doc.add_paragraph(summary)
-    doc.save(file_path)
+    file_path = "static/files/notes.pdf"
 
-    return jsonify({"message": "Notes saved successfully!", "file": file_path})
+    # Create a PDF
+    pdf = canvas.Canvas(file_path, pagesize=letter)
+    pdf.setFont("Helvetica", 12)
+
+    # Add title
+    pdf.drawString(100, 750, "Notes")
+
+    # Add summary text (handling long text)
+    y_position = 730
+    for line in summary.split("\n"):
+        pdf.drawString(100, y_position, line)
+        y_position -= 20  # Move to next line
+
+    pdf.save()
+
+    return jsonify({"message": "Notes saved successfully!", "file": "notes.pdf"})
+
+# Route to serve the file for download
+@app.route('/download_summary')
+def download_summary():
+    return send_from_directory("static/files", "notes.pdf", as_attachment=True)
 
 
 # Serve the Webpage

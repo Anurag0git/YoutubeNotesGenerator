@@ -6,3 +6,4 @@ pillow
 python-dotenv
 python-docx
 yt-dlp
+reportlab

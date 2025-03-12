@@ -33,7 +33,6 @@ function generateNotes() {
     })
     .catch(error => console.error("Error:", error));
 }
-
 function saveNotes() {
     let summary = document.getElementById("summary").value;
     fetch("/save_summary", {
@@ -44,12 +43,15 @@ function saveNotes() {
     .then(response => response.json())
     .then(data => {
         if (data.file) {
-            document.getElementById("download-link").style.display = "block";
+            let downloadLink = document.getElementById("download-link");
+            downloadLink.href = "/download_summary";  // Correct file path
+            downloadLink.style.display = "block";  // Show download button
         }
         alert(data.message);
     })
     .catch(error => console.error("Error:", error));
 }
+
 
 document.getElementById('theme-toggle').addEventListener('click', function() {
     if (document.body.getAttribute('data-theme') === 'dark') {
