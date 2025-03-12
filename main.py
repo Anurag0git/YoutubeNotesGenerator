@@ -134,19 +134,18 @@ def save_summary():
     pdf.setFont("Helvetica-Bold", 14)
     pdf.drawCentredString(300, 770, "Generated Notes")
 
-    # Set margins
-    x_margin = 50
+    left_margin = 50
+    right_margin = 550  # Ensuring text doesn't exceed the right margin
     y_position = 750
-    max_width = 500  # Limit width for text wrapping
-    max_lines_per_page = 35  # Adjust based on font size
+    max_width = right_margin - left_margin  # Limit text width
+    max_lines_per_page = 35
     current_line = 0
 
-    # Properly format text with wrapping
     pdf.setFont("Helvetica", 12)
     for line in summary.split("\n"):
         wrapped_lines = simpleSplit(line, "Helvetica", 12, max_width)
         for sub_line in wrapped_lines:
-            pdf.drawString(x_margin, y_position, sub_line)
+            pdf.drawString(left_margin, y_position, sub_line[:100])  # Ensuring line doesn't exceed margins
             y_position -= 20
             current_line += 1
 
@@ -160,6 +159,8 @@ def save_summary():
     pdf.save()
 
     return jsonify({"message": "Notes saved successfully!", "file": "notes.pdf"})
+
+
 # Route to serve the file for download
 @app.route('/download_summary')
 def download_summary():
