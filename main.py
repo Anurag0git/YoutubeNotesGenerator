@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import google.generativeai as genai
+from reportlab.lib.utils import simpleSplit
 from youtube_transcript_api import YouTubeTranscriptApi, TranscriptsDisabled, NoTranscriptFound
 import re
 import requests
@@ -8,6 +9,10 @@ from dotenv import load_dotenv
 from flask import send_from_directory
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import simpleSplit
+
 
 load_dotenv()
 
@@ -110,6 +115,7 @@ def generate_summary():
 # Ensure the directory exists
 os.makedirs("static/files", exist_ok=True)
 
+
 @app.route('/save_summary', methods=['POST'])
 def save_summary():
     data = request.json
@@ -124,30 +130,36 @@ def save_summary():
     pdf = canvas.Canvas(file_path, pagesize=letter)
     pdf.setFont("Helvetica", 12)
 
-    # Add title
-    pdf.drawString(100, 750, "Notes")
+    # Add title with center alignment
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawCentredString(300, 770, "Generated Notes")
 
-    # Add summary text (handling long text)
-    y_position = 730
+    # Set margins
+    x_margin = 50
+    y_position = 750
+    max_width = 500  # Limit width for text wrapping
     max_lines_per_page = 35  # Adjust based on font size
     current_line = 0
 
+    # Properly format text with wrapping
+    pdf.setFont("Helvetica", 12)
     for line in summary.split("\n"):
-        pdf.drawString(40, y_position, line)
-        y_position -= 20
-        current_line += 1
+        wrapped_lines = simpleSplit(line, "Helvetica", 12, max_width)
+        for sub_line in wrapped_lines:
+            pdf.drawString(x_margin, y_position, sub_line)
+            y_position -= 20
+            current_line += 1
 
-        # If the page is full, start a new page
-        if current_line >= max_lines_per_page:
-            pdf.showPage()
-            pdf.setFont("Helvetica", 12)
-            y_position = 750  # Reset position for the new page
-            current_line = 0  # Reset line count
+            # If the page is full, start a new page
+            if current_line >= max_lines_per_page:
+                pdf.showPage()
+                pdf.setFont("Helvetica", 12)
+                y_position = 750  # Reset position for the new page
+                current_line = 0  # Reset line count
 
     pdf.save()
 
     return jsonify({"message": "Notes saved successfully!", "file": "notes.pdf"})
-
 # Route to serve the file for download
 @app.route('/download_summary')
 def download_summary():
