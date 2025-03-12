@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Summarizer</title>
+    <title>NotesFlix</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body data-theme="light">
     <div class="container">
-        <h2>YouTube Summarizer</h2>
+        <h2>Get your personalized Notes</h2>
 
         <label for="url">Enter YouTube URL:</label>
         <input type="text" id="url" placeholder="Paste YouTube URL here">
-        <button onclick="fetchTranscript()">Fetch Transcript</button>
+        <button onclick="fetchContent()">Fetch Video Content</button>
 
-        <h3>Transcript:</h3>
+        <h3>Video Content:</h3>
         <textarea id="transcript" rows="6" readonly></textarea>
 
-        <button onclick="generateSummary()">Generate Summary</button>
+        <button onclick="generateNotes()">Generate Notes</button>
 
-        <h3>Generated Summary:</h3>
+        <h3>Generated Notes:</h3>
         <textarea id="summary" rows="6" readonly></textarea>
 
-        <button onclick="saveSummary()">Save as .docx</button>
+        <button onclick="saveNotes()">Save as .docx</button>
         <a id="download-link" style="display:none;" href="/download_summary" download>
-            <button>Download Summary</button>
+            <button>Download PDF</button>
         </a>
 
 <!--        <button id="theme-toggle">Toggle Dark Mode</button>-->

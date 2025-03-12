@@ -1,4 +1,4 @@
-function fetchTranscript() {
+function fetchContent() {
     let url = document.getElementById("url").value;
     fetch("/get_transcript", {
         method: "POST",
@@ -16,7 +16,7 @@ function fetchTranscript() {
     .catch(error => console.error("Error:", error));
 }
 
-function generateSummary() {
+function generateNotes() {
     let transcript = document.getElementById("transcript").value;
     fetch("/generate_summary", {
         method: "POST",
@@ -34,7 +34,7 @@ function generateSummary() {
     .catch(error => console.error("Error:", error));
 }
 
-function saveSummary() {
+function saveNotes() {
     let summary = document.getElementById("summary").value;
     fetch("/save_summary", {
         method: "POST",

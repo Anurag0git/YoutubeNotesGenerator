@@ -28,7 +28,7 @@ def extract_video_id(youtube_url):
 
 # API Route to Fetch Transcript with Better Error Handling
 @app.route('/get_transcript', methods=['POST'])
-def get_transcript():
+def get_content():
     data = request.json
     video_url = data.get("url")
     video_id = extract_video_id(video_url)
@@ -64,13 +64,13 @@ def get_transcript():
         return jsonify({"transcript": text, "language": selected_transcript.language})
 
     except NoTranscriptFound:
-        return jsonify({"error": "No transcript available for this video"}), 400
+        return jsonify({"error": "Not available for this video"}), 400
     except TranscriptsDisabled:
-        return jsonify({"error": "Transcripts are disabled for this video"}), 400
+        return jsonify({"error": "Notes are disabled for this video"}), 400
     except requests.exceptions.RequestException as e:
         return jsonify({"error": f"YouTube request failed: {str(e)}"}), 500
     except Exception as e:
-        return jsonify({"error": f"Could not fetch transcript: {str(e)}"}), 500
+        return jsonify({"error": f"Could not fetch content: {str(e)}"}), 500
 
 # API Route to Generate Summary
 @app.route('/generate_summary', methods=['POST'])
@@ -79,17 +79,31 @@ def generate_summary():
     transcript = data.get("transcript", "").strip()
 
     if not transcript:
-        return jsonify({"error": "Transcript is empty"}), 400
+        return jsonify({"error": "Content is empty"}), 400
 
-    prompt = f"Generate detailed notes for each section in the given transcript in simplest language English and do not use formatting, use easiest explaination so that even kid could understand, make proper notes so once read, I should not forget them in my life:\n\n{transcript}"
+    prompt = f"""
+    Generate the most detailed, structured, and easy-to-remember notes from the given transcript. Follow these guidelines:
+
+    1️⃣ **Simplify Complex Concepts**: Explain everything in the simplest way possible so that even a 10-year-old can understand.  
+    2️⃣ **Use Step-by-Step Breakdown**: Organize content into structured sections with bullet points, key takeaways, and summaries.  
+    3️⃣ **Add Analogies & Examples**: Relate concepts to real-life situations to make them more memorable.  
+    4️⃣ **Highlight Key Points**: Emphasize important details with concise, impactful sentences.  
+    5️⃣ **Make it Engaging**: Use a storytelling approach to maintain interest.  
+    6️⃣ **Ensure Retention**: Format the information in a way that helps retain it long-term.  
+    7️⃣ **Avoid Unnecessary Complexity**: No unnecessary details—just clear, practical, and useful knowledge.
+
+    Only provide the notes without any introductions, headings, promotional text, or unnecessary comments.
+
+    {transcript}
+    """
 
     try:
         model = genai.GenerativeModel("gemini-2.0-flash")
         response = model.generate_content(prompt)
-        summary = response.text if response else "Failed to generate summary."
+        summary = response.text if response else "Failed to generate notes."
         return jsonify({"summary": summary})
     except Exception as e:
-        return jsonify({"error": f"Could not generate summary: {str(e)}"}), 500
+        return jsonify({"error": f"Could not generate notes: {str(e)}"}), 500
 
 
 # API Route to Save Summary as .docx
@@ -99,15 +113,15 @@ def save_summary():
     summary = data.get("summary", "").strip()
 
     if not summary:
-        return jsonify({"error": "No summary to save!"}), 400
+        return jsonify({"error": "No notes to save!"}), 400
 
-    file_path = "summary.docx"
+    file_path = "notes.docx"
     doc = Document()
-    doc.add_heading("YouTube Video Summary", level=1)
+    doc.add_heading("Notes", level=1)
     doc.add_paragraph(summary)
     doc.save(file_path)
 
-    return jsonify({"message": "Summary saved successfully!", "file": file_path})
+    return jsonify({"message": "Notes saved successfully!", "file": file_path})
 
 
 # Serve the Webpage
