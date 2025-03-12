@@ -85,7 +85,8 @@ def generate_summary():
 
     prompt = f"""
     Generate the most detailed, structured, and easy-to-remember notes from the given transcript. Follow these guidelines:
-
+    Only provide the notes WITHOUT any introductions, headings, promotional text, or unnecessary comments.
+    AND DO NOT MENTION "TRANSCRIPT OR ANY RELATED WORD" ANYWHERE
     1️⃣ **Simplify Complex Concepts**: Explain everything in the simplest way possible so that even a 10-year-old can understand.  
     2️⃣ **Use Step-by-Step Breakdown**: Organize content into structured sections with bullet points, key takeaways, and summaries.  
     3️⃣ **Add Analogies & Examples**: Relate concepts to real-life situations to make them more memorable.  
@@ -94,7 +95,6 @@ def generate_summary():
     6️⃣ **Ensure Retention**: Format the information in a way that helps retain it long-term.  
     7️⃣ **Avoid Unnecessary Complexity**: No unnecessary details—just clear, practical, and useful knowledge.
 
-    Only provide the notes without any introductions, headings, promotional text, or unnecessary comments.
 
     {transcript}
     """
@@ -133,7 +133,7 @@ def save_summary():
     current_line = 0
 
     for line in summary.split("\n"):
-        pdf.drawString(100, y_position, line)
+        pdf.drawString(40, y_position, line)
         y_position -= 20
         current_line += 1
 
