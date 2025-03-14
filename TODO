@@ -1,0 +1,3 @@
+// TODO --> user should only see download pdf button, other processec like generate content and etc should not be visible to user, because ultimately user only wants the pdf of his notes
+//TODO -->  i also want to add multilingual support so that user can select in which language he wants the notes to be generated
+//TODO --> show loading animation like this https://loading.io/spinner/eclipse/-eclipse-ring-circle-rotate before generating pdf, so that user may understand how long he should wait, before downloading pdf

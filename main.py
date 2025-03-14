@@ -65,8 +65,8 @@ def get_content():
             )
 
         # Extract transcript text properly
-        text = " ".join([entry.text for entry in selected_transcript.fetch()])
-        # text = " ".join([entry["text"] for entry in selected_transcript.fetch()])
+        # text = " ".join([entry.text for entry in selected_transcript.fetch()])   # use this when deploying
+        text = " ".join([entry["text"] for entry in selected_transcript.fetch()]) # use this when testing on local machine
 
         return jsonify({"transcript": text, "language": selected_transcript.language})
 
@@ -84,12 +84,13 @@ def get_content():
 def generate_summary():
     data = request.json
     transcript = data.get("transcript", "").strip()
+    language = data.get("language", "en").strip()  # default to English if not provided
 
     if not transcript:
         return jsonify({"error": "Content is empty"}), 400
 
     prompt = f"""
-    Generate the most detailed, structured, and easy-to-remember notes from the given transcript. Follow these guidelines:
+    Generate the most detailed, structured, and easy-to-remember notes TRANSLATE TO {language} LANGUAGE from the given transcript WITH APPROPRIATE CHARACTERS WHICH WOULD BE RECOGNISED IN .PDF FORMAT. Follow these guidelines:
     Only provide the notes WITHOUT any introductions, headings, promotional text, or unnecessary comments.
     AND DO NOT MENTION "TRANSCRIPT OR ANY RELATED WORD" ANYWHERE
     1️⃣ **Simplify Complex Concepts**: Explain everything in the simplest way possible so that even a 10-year-old can understand.  
