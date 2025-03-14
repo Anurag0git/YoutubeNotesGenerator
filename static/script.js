@@ -54,7 +54,7 @@ async function processAndDownloadPDF() {
         downloadLink.href = "/download_summary";
         downloadLink.style.display = "block";
 
-        alert("✅ PDF is ready! Click the 'Download PDF' button below.");
+        alert("PDF is ready! Click the 'Download PDF' button below.");
     } catch (error) {
         alert("Error: " + error.message);
     } finally {
