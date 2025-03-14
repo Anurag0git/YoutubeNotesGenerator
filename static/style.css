@@ -12,7 +12,7 @@ body[data-theme='light'] {
 /* Container */
 .container {
     text-align: center;
-    max-width: 600px;
+    max-width: 100%;
     margin: 50px auto;
     padding: 20px;
     border-radius: 10px;
@@ -28,31 +28,27 @@ body[data-theme='light'] {
 
 /* Input Fields */
 input, select {
-    width: 90%;
+    width: 50%;
     padding: 10px;
     margin-top: 5px;
+
     border: 1px solid #ccc;
     border-radius: 5px;
     outline: none;
 }
 
-/* Button */
-/*button {*/
-/*    width: 100%;*/
-/*    border-radius: 50%;*/
-/*    font-weight: bold;*/
-/*    padding: 12px;*/
-/*    font-size: 16px;*/
-/*    margin-top: 10px;*/
-/*    background: #000000;*/
-/*    color: #ffffff;*/
-/*    border: none;*/
-/*    cursor: pointer;*/
-/*    transition: background 0.3s ease;*/
-/*}*/
+language-container {
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px;
+    width: 30px;
+}
 
 /* CSS */
 button {
+  margin-top: 20px;
   align-items: center;
   appearance: none;
   background-color: #000000;
@@ -62,8 +58,6 @@ button {
   box-sizing: border-box;
   color: #d3d3d3;
   cursor: pointer;
-  /*display: inline-flex;*/
-  /*fill: currentcolor;*/
   font-family: "Google Sans",Roboto,Arial,sans-serif;
   font-size: 14px;
   font-weight: bold;
@@ -77,21 +71,12 @@ button {
   position: relative;
   text-align: center;
   text-transform: none;
-  /*transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1),opacity 15ms linear 30ms,transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;*/
-  /*user-select: none;*/
-  /*-webkit-user-select: none;*/
-  /*touch-action: manipulation;*/
   width: auto;
-  /*will-change: transform,opacity;*/
-  /*z-index: 0;*/
 }
 button:hover {
-  background: #e3e3e3;
-  color: #000000;
-}/*button:hover {*/
-/*    background: #afaeae;*/
-/*    color: #000000;*/
-/*}*/
+    background: #e3e3e3;
+    color: #000000;
+}
 
 /* Loading Animation */
 .loading {
@@ -113,15 +98,3 @@ button:hover {
     text-align: center;
 }
 
-/*!* Animated Spinner *!*/
-/*.loading img {*/
-/*    width: 50px;*/
-/*    height: 50px;*/
-/*    animation: spin 1s linear infinite;*/
-/*}*/
-
-/*!* Rotate Animation *!*/
-/*@keyframes spin {*/
-/*    from { transform: rotate(0deg); }*/
-/*    to { transform: rotate(360deg); }*/
-/*}*/
