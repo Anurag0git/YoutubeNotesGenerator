@@ -13,7 +13,7 @@ body[data-theme='light'] {
 .container {
     text-align: center;
     width: auto;
-    max-width: 50%;
+    max-width: 60%;
     margin: 50px auto;
     padding: 20px;
     border-radius: 10px;
@@ -103,7 +103,7 @@ button:hover {
 .loading {
     display: none;
     position: absolute;
-    top: 65%;
+    top: 80%;
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 16px;
