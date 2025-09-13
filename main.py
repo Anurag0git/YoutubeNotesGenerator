@@ -90,23 +90,40 @@ def generate_summary():
         return jsonify({"error": "Content is empty"}), 400
 
     prompt = f"""
-    Generate the most detailed, structured, and easy-to-remember notes TRANSLATE TO {language} LANGUAGE from the given transcript WITH APPROPRIATE CHARACTERS WHICH WOULD BE RECOGNISED IN .PDF FORMAT. Follow these guidelines:
+    Generate the most detailed, structured, and easy-to-remember notes  from the given transcript WITH APPROPRIATE CHARACTERS WHICH WOULD BE RECOGNISED IN .PDF FORMAT. Follow these guidelines:
     Only provide the notes WITHOUT any introductions, headings, promotional text, or unnecessary comments.
     AND DO NOT MENTION "TRANSCRIPT OR ANY RELATED WORD" ANYWHERE
-    1️⃣ **Simplify Complex Concepts**: Explain everything in the simplest way possible so that even a 10-year-old can understand.  
-    2️⃣ **Use Step-by-Step Breakdown**: Organize content into structured sections with bullet points, key takeaways, and summaries.  
-    3️⃣ **Add Analogies & Examples**: Relate concepts to real-life situations to make them more memorable.  
-    4️⃣ **Highlight Key Points**: Emphasize important details with concise, impactful sentences.  
-    5️⃣ **Make it Engaging**: Use a storytelling approach to maintain interest.  
-    6️⃣ **Ensure Retention**: Format the information in a way that helps retain it long-term.  
-    7️⃣ **Avoid Unnecessary Complexity**: No unnecessary details—just clear, practical, and useful knowledge.
+    1️⃣
+You are my study assistant. I will paste a YouTube video transcript. 
+
+Your job: Transform the transcript into **detailed, crisp, revision-friendly notes TRANSLATE TO {language} LANGUAGE** that include EVERY SINGLE point from the transcript — without hallucinating, skipping, or reordering unnecessarily. 
+
+Guidelines:
+1. Do not add anything beyond the transcript. No hallucination.  
+2. Do not miss any line, point, or important detail.  
+3. Structure the notes in a clear, logical flow (same as video).  
+4. Use bullet points, subheadings, and numbering for readability.  
+5. Highlight important terms in **bold**.  
+6. Separate out definitions, formulas, examples, frameworks, or steps.  
+7. If the transcript includes analogies, mnemonics, or tips, capture them exactly.  
+8. At the end, provide a **1-minute quick summary** (revision version).  
+9. Simplify Complex Concepts: Explain everything in the simplest way possible so that even a 10-year-old can understand.  
+10. Use Step-by-Step Breakdown: Organize content into structured sections with bullet points, key takeaways, and summaries.  
+11. Add Analogies & Examples: Relate concepts to real-life situations to make them more memorable.  
+12. Highlight Key Points: Emphasize important details with concise, impactful sentences.  
+13. Make it Engaging: Use a storytelling approach to maintain interest.  
+14. Ensure Retention: Format the information in a way that helps retain it long-term.  
+15. Avoid Unnecessary Complexity: No unnecessary details—just clear, practical, and useful knowledge.
+16. Goal: When I read these notes later, I should recall the entire video quickly, as if I watched it again, without needing to rewatch.
+
+Transcript will be pasted after this.
 
 
     {transcript}
     """
 
     try:
-        model = genai.GenerativeModel("gemini-2.0-flash")
+        model = genai.GenerativeModel("gemini-2.5-flash")
         response = model.generate_content(prompt)
         summary = response.text if response else "Failed to generate notes."
         return jsonify({"summary": summary})
